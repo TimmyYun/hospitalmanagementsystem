@@ -13,4 +13,4 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 class DepartmentSerializer(serializers.Serializer):
     name = serializers.CharField()
-    
+    id = serializers.IntegerField()

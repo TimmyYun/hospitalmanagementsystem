@@ -6,14 +6,9 @@ from rest_framework.response import Response
 
 from api.models import Department
 from api.serializers import DepartmentSerializer
+from api.forms import CreateUserForm
 
-from rest_framework.parsers import JSONParser
-from rest_framework.renderers import JSONRenderer
 from django.http import JsonResponse
-
-import io
-from rest_framework.parsers import JSONParser
-
 
 # Create your views here.
 
@@ -55,28 +50,58 @@ def getRoutes(request):
 
 @api_view(['POST'])
 def registerPage(request):
-    print(request)
-    return Response('REGISTRATION FORM')
+    form = CreateUserForm(request.POST)
+    if form.is_valid():
+        form.save()
+    print(form)
+    # context = {'form': form}
+
+    return Response('Done')
+
+def loginPage(request):
+    return Response('Done')
+
+
 
 @api_view(['GET'])
 def getAppointments(request):
     return Response('APPOINTMENTS')
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def getDepartments(request):
-    departments = Department.objects.all()
-    serializer = DepartmentSerializer(departments, many=True)
-    print(serializer)
-    return JsonResponse({'data': serializer.data})
 
+    if request.method == 'GET':
+        departments = Department.objects.all()
+        serializer = DepartmentSerializer(departments, many=True)
+        return Response(serializer.data)
 
-@api_view(['POST'])
-def createDepartments(request):
-    
-    newDepartment = Department(name = request.data)
-    newDepartment.save()
-    print(f"Created new department: {newDepartment.name}")
-    departments = Department.objects.all()
-    serializer = DepartmentSerializer(departments, many=True)
-    print(serializer)
-    return Response('Done')
+    if request.method == 'POST':    
+        newDepartment = Department(name = request.data)
+        newDepartment.save()
+        print(f"Created new department: {newDepartment.name}")
+        departments = Department.objects.all()
+        serializer = DepartmentSerializer(departments, many=True)
+        print(serializer)
+        return Response('Done')
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def getDepartment(request, pk):
+
+        if request.method == 'GET':
+            departments = Department.objects.get(id=pk)
+            serializer = DepartmentSerializer(departments, many=False)
+            return Response(serializer.data)
+
+        if request.method == 'PUT':
+            data = request.data
+            department = Department.objects.get(id=pk)
+            serializer = DepartmentSerializer(instance=department, data=data)
+            if serializer.is_valid():
+                serializer.save()
+            return serializer.data
+
+        if request.method == 'DELETE':
+            department = Department.objects.get(id=pk)
+            department.delete()
+            return Response(f'Department {pk} was deleted')
+
