@@ -13,7 +13,7 @@ export default function LoginPage() {
     const handleLogin = async (event) => {
         event.preventDefault();
         setEmailAddress("");
-            setPassword("");
+        setPassword("");
         console.log('LOGIn')
         navigate('/')
     };
@@ -21,52 +21,52 @@ export default function LoginPage() {
 
 
     useEffect(() => {
-        document.title = "Zamn - Login"
+        document.title = "Login"
     }, [])
 
     return (
         <div className="login-container">
 
-        <div className="form-box">
-    
-    
-        
-            <form onSubmit={handleLogin} method="POST">
-                <input
-                    aria-label="Enter your email address"
-                    type="text"
-                    placeholder="Email address"
-                    className=""
-                    onChange={({ target }) => setEmailAddress(target.value)}
-                    value={emailAddress}
-                />
-                <input
-                    aria-label="Enter your password"
-                    type="password"
-                    placeholder="Password"
-                    className=""
-    
-                    onChange={({ target }) => setPassword(target.value)}
-                    value={password}
-                />
-    
+            <div className="form-box">
+
+
+
+                <form onSubmit={handleLogin} method="POST">
+                    <input
+                        aria-label="Enter your email address"
+                        type="text"
+                        placeholder="Email address"
+                        className=""
+                        onChange={({ target }) => setEmailAddress(target.value)}
+                        value={emailAddress}
+                    />
+                    <input
+                        aria-label="Enter your password"
+                        type="password"
+                        placeholder="Password"
+                        className=""
+
+                        onChange={({ target }) => setPassword(target.value)}
+                        value={password}
+                    />
+
                     <button
                         disabled={isInvalid}
                         type="submit"
-                     
+
                     >
                         Login
                     </button>
-            </form>
-        </div>
-        <div className="signup">
-            <p className="">
-                Don't have an account?{` `}
-                <Link to={"/sign-up"} className="font-bold text-purple-medium">
-                    Sign up
-                </Link>
-            </p>
-        </div>
+                </form>
+            </div>
+            <div className="signup">
+                <p className="">
+                    Don't have an account?{` `}
+                    <Link to={"/sign-up"} className="font-bold text-purple-medium">
+                        Sign up
+                    </Link>
+                </p>
+            </div>
         </div>
     )
 }

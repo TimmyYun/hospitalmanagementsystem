@@ -1,0 +1,36 @@
+.dashboard-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5vh;
+}
+
+.dashboard-container>div {
+    margin-bottom: 2rem;
+    border: 1px solid black;
+    padding: 1rem;
+    min-width: 85vw;
+}
+
+p {
+    padding: 0.5rem;
+    margin: 0;
+}
+
+.hide {
+    display: none;
+}
+
+.user-container>p {
+    cursor: pointer;
+    width: auto;
+    border: 1px solid black;
+    margin-bottom: 0.3rem;
+}
+
+.user-info {
+    background-color: beige;
+    margin: 0.5rem;
+    padding: 1rem;
+}
