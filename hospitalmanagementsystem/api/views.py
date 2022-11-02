@@ -1,5 +1,19 @@
 from rest_framework.response import Response 
 from rest_framework.decorators import api_view
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+from api.models import Department
+from api.serializers import DepartmentSerializer
+
+from rest_framework.parsers import JSONParser
+from rest_framework.renderers import JSONRenderer
+from django.http import JsonResponse
+
+import io
+from rest_framework.parsers import JSONParser
+
 
 # Create your views here.
 
@@ -47,3 +61,22 @@ def registerPage(request):
 @api_view(['GET'])
 def getAppointments(request):
     return Response('APPOINTMENTS')
+
+@api_view(['GET'])
+def getDepartments(request):
+    departments = Department.objects.all()
+    serializer = DepartmentSerializer(departments, many=True)
+    print(serializer)
+    return JsonResponse({'data': serializer.data})
+
+
+@api_view(['POST'])
+def createDepartments(request):
+    
+    newDepartment = Department(name = request.data)
+    newDepartment.save()
+    print(f"Created new department: {newDepartment.name}")
+    departments = Department.objects.all()
+    serializer = DepartmentSerializer(departments, many=True)
+    print(serializer)
+    return Response('Done')
