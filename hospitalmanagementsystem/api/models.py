@@ -16,6 +16,7 @@ class Person(models.Model):
     iin = models.CharField(max_length=20)
     phoneNumber = models.CharField(max_length=20)
     address = models.CharField(max_length=50, blank = True)
+    email = models.CharField(max_length=20, blank = True)
 
     class Meta:
         abstract = True
@@ -33,7 +34,6 @@ class Employees(Person):
 
     status = models.CharField(max_length=1, choices=statuses)
     type = models.CharField(max_length=1, choices=types)
-    email = models.CharField(max_length=20, blank = True)
     departmentId = models.ForeignKey(Department, on_delete=models.CASCADE)
     specializationId = models.CharField(max_length=30)
     experience = models.IntegerField()
@@ -44,7 +44,8 @@ class Employees(Person):
     rating = models.IntegerField(default = 0, validators=[MaxValueValidator(10), MinValueValidator(0)])
     homepage = models.CharField(max_length=30)
     
-# class Clients(models.Model):
+class Clients(models.Model):
+    bloodGroup = models.IntegerField(validators=[MaxValueValidator(4), MinValueValidator(0)])
     
 #     CREATE TABLE Patients (
 # --       TheDay INT NOT NULL,
