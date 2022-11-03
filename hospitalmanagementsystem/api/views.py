@@ -61,8 +61,6 @@ def registerPage(request):
 def loginPage(request):
     return Response('Done')
 
-
-
 @api_view(['GET'])
 def getAppointments(request):
     return Response('APPOINTMENTS')
@@ -71,38 +69,45 @@ def getAppointments(request):
 
 @api_view(['GET', 'POST'])
 def getDepartments(request):
-
+    """
+    List all departments, or create a new department.
+    """
     if request.method == 'GET':
         departments = Department.objects.all()
         serializer = DepartmentSerializer(departments, many=True)
         return Response(serializer.data)
 
     if request.method == 'POST':    
-        newDepartment = Department(name = request.data)
-        newDepartment.save()
-        print(f"Created new department: {newDepartment.name}")
-        return Response('Done')
+        serializer = DepartmentSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save(id=id)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def getDepartment(request, pk):
+    """
+    Retrieve, update or delete a department.
+    """
+    try:
+        department = Department.objects.get(pk=pk)
+    except Department.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
-        if request.method == 'GET':
-            departments = Department.objects.get(id=pk)
-            serializer = DepartmentSerializer(departments, many=False)
+    if request.method == 'GET':
+        serializer = DepartmentSerializer(department, many=False)
+        return Response(serializer.data)
+
+    if request.method == 'PUT':
+        serializer = DepartmentSerializer(instance=department, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
             return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        if request.method == 'PUT':
-            data = request.data
-            department = Department.objects.get(id=pk)
-            serializer = DepartmentSerializer(instance=department, data=data)
-            if serializer.is_valid():
-                serializer.save()
-            return serializer.data
-
-        if request.method == 'DELETE':
-            department = Department.objects.get(id=pk)
-            department.delete()
-            return Response(f'Department {pk} was deleted')
+    if request.method == 'DELETE':
+        department.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 #Clients
 
