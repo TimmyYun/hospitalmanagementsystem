@@ -17,11 +17,11 @@ class Person(models.Model):
     phoneNumber = models.CharField(max_length=20)
     address = models.CharField(max_length=50, blank = True)
     email = models.CharField(max_length=20, blank = True)
-
+    maritalStatus = models.CharField(max_length=20, blank = True)
     class Meta:
         abstract = True
 
-class Employees(Person):
+class Employee(Person):
     statuses = (
         ('A', 'Active'),
         ('I', 'In reserve'),
@@ -37,32 +37,14 @@ class Employees(Person):
     departmentId = models.ForeignKey(Department, on_delete=models.CASCADE)
     specializationId = models.CharField(max_length=30)
     experience = models.IntegerField()
-    photo = models.ImageField(upload_to='photos') 
+    photo = models.ImageField(upload_to='photos', blank = True) 
     category = models.IntegerField()
     price = models.IntegerField()
     degree = models.CharField(max_length=30)
     rating = models.IntegerField(default = 0, validators=[MaxValueValidator(10), MinValueValidator(0)])
     homepage = models.CharField(max_length=30)
     
-class Clients(models.Model):
+class Client(models.Model):
     bloodGroup = models.IntegerField(validators=[MaxValueValidator(4), MinValueValidator(0)])
-    
-#     CREATE TABLE Patients (
-# --       TheDay INT NOT NULL,
-# --       TheMonth INT NOT NULL,
-# --       TheYear INT NOT NULL,
-#       DateOfBirth INT NOT NULL,
-#             IINnumber INT NOT NULL,
-#             PatientID INT NOT NULL,
-#             TheName VARCHAR(20) NOT NULL,
-#             Surname VARCHAR(20) NOT NULL,
-#             MiddleName VARCHAR(20),
-#             BloodGroup INT NOT NULL,
-#             EmergencyConstantNumber INT NOT NULL,
-#             ContactNumber INT NOT NULL,
-#             Email VARCHAR(20),
-#             Adress VARCHAR(50) NOT NULL,
-#             MartialStatus VARCHAR(20) NOT NULL,
-#             RegistrationDate INT NOT NULL,
-#       PRIMARY KEY(PatientID)
-#             );
+    emergencyPhoneNumber = models.CharField(max_length=20)
+    registrationDate = models.DateTimeField(auto_now_add = True)
