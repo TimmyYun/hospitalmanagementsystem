@@ -80,7 +80,7 @@ def getDepartments(request):
     if request.method == 'POST':    
         serializer = DepartmentSerializer(data = request.data)
         if serializer.is_valid():
-            serializer.save(id=id)
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -137,6 +137,7 @@ def getClient(request, pk):
             data = request.data
             client = Client.objects.get(id=pk)
             serializer = ClientSerializer(instance=client, data=data)
+            print(serializer)
             if serializer.is_valid():
                 serializer.save()
             return serializer.data

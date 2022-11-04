@@ -6,7 +6,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 # class User(models.Model):
     
 class Department(models.Model):
-    name = models.CharField(max_length=20)
+    id = models.IntegerField(auto_created=True, primary_key=True, serialize=True, verbose_name='ID', unique = True)
+    name = models.CharField(max_length=40)
 
 class Person(models.Model):
     name = models.CharField(max_length=20)
@@ -34,7 +35,7 @@ class Employee(Person):
 
     status = models.CharField(max_length=1, choices=statuses)
     type = models.CharField(max_length=1, choices=types)
-    departmentId = models.ForeignKey(Department, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
     specializationId = models.CharField(max_length=30)
     experience = models.IntegerField()
     photo = models.ImageField(upload_to='photos', blank = True) 
