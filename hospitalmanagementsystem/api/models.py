@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
@@ -8,12 +9,12 @@ class Department(models.Model):
     id = models.IntegerField(auto_created=True, primary_key=True,
                              serialize=True, verbose_name='ID', unique=True)
     name = models.CharField(max_length=40)
-    description = models.CharField(max_length=100)
+    description = models.TextField()
 
 
 class Person(models.Model):
     account = models.OneToOneField(
-        User, on_delete=models.CASCADE, primary_key=True, blank=True)
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=20)
     surname = models.CharField(max_length=20)
     middlename = models.CharField(max_length=20, blank=True)
@@ -53,7 +54,7 @@ class Employee(Person):
     homepage = models.CharField(max_length=30)
 
 
-class Client(models.Model):
+class Client(Person):
     bloodGroup = models.IntegerField(
         validators=[MaxValueValidator(4), MinValueValidator(0)])
     emergencyPhoneNumber = models.CharField(max_length=20)
