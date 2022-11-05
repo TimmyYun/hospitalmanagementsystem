@@ -5,12 +5,10 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from django.contrib.auth.models import User
 
 from api.models import Department, Client, Person, Employee
 from api.serializers import DepartmentSerializer, ClientSerializer, EmployeeSerializer
-from api.forms import CreateUserForm
-
-from django.http import JsonResponse
 
 # Create your views here.
 
@@ -70,13 +68,10 @@ def getRoutes(request):
 
 @api_view(['POST'])
 def registerPage(request):
-    form = CreateUserForm(request.POST)
-    if form.is_valid():
-        form.save()
-    print(form)
-    # context = {'form': form}
-
-    return Response('Done')
+    user = User.objects.create_user(request.data)
+    # if user.is_valid():
+    #     user.save()
+    return Response(request.data)
 
 def loginPage(request):
     return Response('Done')

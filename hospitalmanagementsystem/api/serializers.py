@@ -6,12 +6,12 @@ from api.models import Department, Employee, Client
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['url', 'username', 'email', 'groups']
+        fields = '__all__'
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
-        fields = ['url', 'name']
+        fields = '__all__'
 
 class DepartmentSerializer(ModelSerializer):
     class Meta:
