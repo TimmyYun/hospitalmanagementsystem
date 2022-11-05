@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 # class User(models.Model):
@@ -10,6 +10,7 @@ class Department(models.Model):
     name = models.CharField(max_length=40)
 
 class Person(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True) 
     name = models.CharField(max_length=20)
     surname = models.CharField(max_length=20)
     middlename = models.CharField(max_length=20, blank = True)
@@ -17,7 +18,7 @@ class Person(models.Model):
     iin = models.CharField(max_length=20)
     phoneNumber = models.CharField(max_length=20)
     address = models.CharField(max_length=50, blank = True)
-    email = models.CharField(max_length=20, blank = True)
+    email = models.CharField(max_length=40, blank = True)
     maritalStatus = models.CharField(max_length=20, blank = True)
     class Meta:
         abstract = True
