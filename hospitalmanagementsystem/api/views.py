@@ -1,84 +1,39 @@
-from rest_framework.response import Response 
 from rest_framework import status
+from rest_framework import generics
+from rest_framework.response import Response 
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
-from rest_framework.response import Response
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
-from django.contrib.auth.models import User
+from .serializers import RegisterSerializer, MyTokenObtainPairSerializer
 
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from api.models import Department, Client, Person, Employee
 from api.serializers import DepartmentSerializer, ClientSerializer, EmployeeSerializer
 
-# Create your views here.
-
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-
-        # Add custom claims
-        token['username'] = user.username
-        # ...
-
-        return token
-
+#Views
 class MyTokenObtainPairView(TokenObtainPairView):
+    permission_classes = (AllowAny,)
     serializer_class = MyTokenObtainPairSerializer
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = RegisterSerializer
+
+
+
+#Routes
 
 @api_view(['GET'])
 def getRoutes(request):
     routes = [
         {
-            'login/token',
-            'login/token/refresh',
-        },
-        {
-            'Endpoint': '/appointment/',
-            'method': 'GET',
-            'body': None,
-            'description': 'Returns an array of appointments'
-        },
-        {
-            'Endpoint': '/appointment/id',
-            'method': 'GET',
-            'body': None,
-            'description': 'Returns a single note object'
-        },
-        {
-            'Endpoint': '/appointment/create/',
-            'method': 'POST',
-            'body': {'body': ""},
-            'description': 'Creates new appointment with data sent in post request'
-        },
-        {
-            'Endpoint': '/appointment/id/update/',
-            'method': 'PUT',
-            'body': {'body': ""},
-            'description': 'Creates an existing appointment with data sent in post request'
-        },
-        {
-            'Endpoint': '/appointment/id/delete/',
-            'method': 'DELETE',
-            'body': None,
-            'description': 'Deletes and exiting appointment'
-        },
+            'login/',
+            'login/refresh',
+        }
     ]
     return Response(routes)
-
-@api_view(['POST'])
-def registerPage(request):
-    user = User.objects.create_user(request.data)
-    # if user.is_valid():
-    #     user.save()
-    return Response(request.data)
-
-def loginPage(request):
-    return Response('Done')
-
-@api_view(['GET'])
-def getAppointments(request):
-    return Response('APPOINTMENTS')
 
 #Departments
 
@@ -127,7 +82,6 @@ def getDepartment(request, pk):
 #Clients
 
 @api_view(['GET', 'POST'])
-@permission_classes([IsAdminUser])
 def getClients(request):
 
     if request.method == 'GET':
@@ -163,3 +117,8 @@ def getClient(request, pk):
             client.delete()
             return Response(f'Client {pk} was deleted')
 
+#Appointments
+
+@api_view(['GET'])
+def getAppointments(request):
+    return Response('APPOINTMENTS')

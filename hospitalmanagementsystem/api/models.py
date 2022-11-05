@@ -3,12 +3,15 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
 # Create your models here.
 
+
+
 class Department(models.Model):
     id = models.IntegerField(auto_created=True, primary_key=True, serialize=True, verbose_name='ID', unique = True)
     name = models.CharField(max_length=40)
     description = models.CharField(max_length=100)
 
 class Person(models.Model):
+    account = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     name = models.CharField(max_length=20)
     surname = models.CharField(max_length=20)
     middlename = models.CharField(max_length=20, blank = True)
