@@ -9,3 +9,16 @@ This one to start the project
 ```
 npm run
 ```
+
+To start backend:
+First: install dependencies
+
+```
+pip install -r .\requirements.txt
+```
+
+Second: run server
+
+```
+python .\hospitalmanagementsystem\manage.py runserver
+```
