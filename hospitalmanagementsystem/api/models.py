@@ -15,14 +15,11 @@ class Department(models.Model):
 class Person(models.Model):
     account = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    name = models.CharField(max_length=20)
-    surname = models.CharField(max_length=20)
     middlename = models.CharField(max_length=20, blank=True)
     dateOfBirth = models.DateField()
     iin = models.CharField(max_length=20)
     phoneNumber = models.CharField(max_length=20)
     address = models.CharField(max_length=50, blank=True)
-    email = models.CharField(max_length=40, blank=True)
     maritalStatus = models.CharField(max_length=20, blank=True)
 
     class Meta:

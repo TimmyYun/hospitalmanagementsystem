@@ -31,6 +31,7 @@ class RegisterView(generics.CreateAPIView):
 def getRoutes(request):
     routes = [
         {
+            'register/',
             'login/',
             'login/refresh',
         }
@@ -98,8 +99,7 @@ def getClients(request):
     if request.method == 'POST':
         newClient = Client(request.data)
         newClient.save()
-        print(f"Created new client: {newClient.name}")
-        return Response('Done')
+        return Response(f"Created new client: {newClient.name}")
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -114,7 +114,6 @@ def getClient(request, pk):
         data = request.data
         client = Client.objects.get(id=pk)
         serializer = ClientSerializer(instance=client, data=data)
-        print(serializer)
         if serializer.is_valid():
             serializer.save()
         return serializer.data
@@ -125,7 +124,6 @@ def getClient(request, pk):
         return Response(f'Client {pk} was deleted')
 
 # Appointments
-
 
 @api_view(['GET'])
 def getAppointments(request):
