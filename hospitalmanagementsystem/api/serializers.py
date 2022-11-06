@@ -52,8 +52,7 @@ class RegisterSerializer(ModelSerializer):
         write_only=True, required=False)
     status = serializers.CharField(write_only=True, required=False)
     type = serializers.CharField(write_only=True, required=False)
-    department = serializers.ModelField(
-        Department, write_only=True, required=False)
+    department = serializers.IntegerField(write_only=True, required=False)
     specializationId = serializers.CharField(write_only=True, required=False)
     experience = serializers.IntegerField(write_only=True, required=False)
     photo = serializers.ImageField(write_only=True, required=False)
@@ -134,10 +133,9 @@ class RegisterSerializer(ModelSerializer):
             maritalStatus=validated_data['maritalStatus'],
             status=validated_data['status'],
             type=validated_data['type'],
-            department=validated_data['department'],
+            department=Department.objects.get(pk=validated_data['department']),
             specializationId=validated_data['specializationId'],
             experience=validated_data['experience'],
-            photo=validated_data['photo'],
             category=validated_data['category'],
             price=validated_data['price'],
             degree=validated_data['degree'],
