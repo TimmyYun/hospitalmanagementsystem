@@ -36,9 +36,9 @@ export default function LoginPage() {
 
                 <form onSubmit={handleLogin} method="POST">
                     <input
-                        aria-label="Enter your email address"
+                        aria-label="Enter your username"
                         type="text"
-                        placeholder="Email address"
+                        placeholder="Username"
                         className=""
                         onChange={({ target }) => setUsername(target.value)}
                         value={username}
