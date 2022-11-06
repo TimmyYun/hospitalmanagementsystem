@@ -1,13 +1,13 @@
 import { useState } from 'react';
 
 export default function Patient({ orderDesc, id, master }) {
-    const [isHidden, setIsHidden] = useState(false)
+    const [isHidden, setIsHidden] = useState(true)
 
     return (
         <div className='user-container'>
             <p
                 onClick={() => setIsHidden(!isHidden)}
-            >Patient</p>
+            >↓ Patient</p>
             <div className={`user-info ${isHidden ? "hide" : ""}`}>
                 <div>
                     Info

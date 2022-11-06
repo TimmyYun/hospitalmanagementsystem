@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 export default function Doctor({ orderDesc, id, master }) {
-    const [isHidden, setIsHidden] = useState(false)
+    const [isHidden, setIsHidden] = useState(true)
 
     return (
         <div className='user-container'>
