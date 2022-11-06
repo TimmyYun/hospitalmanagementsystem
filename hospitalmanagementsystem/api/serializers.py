@@ -136,6 +136,7 @@ class RegisterSerializer(ModelSerializer):
             department=Department.objects.get(pk=validated_data['department']),
             specializationId=validated_data['specializationId'],
             experience=validated_data['experience'],
+            photo=validated_data['photo'],
             category=validated_data['category'],
             price=validated_data['price'],
             degree=validated_data['degree'],
