@@ -9,7 +9,7 @@ class Department(models.Model):
     id = models.IntegerField(auto_created=True, primary_key=True,
                              serialize=True, verbose_name='ID', unique=True)
     name = models.CharField(max_length=40)
-    description = models.TextField()
+    description = models.TextField(blank=True)
 
 
 class Person(models.Model):
@@ -34,7 +34,6 @@ class Employee(Person):
     )
     types = (
         ('D', 'Doctor'),
-        ('S', 'Staff'),
     )
 
     status = models.CharField(max_length=1, choices=statuses)

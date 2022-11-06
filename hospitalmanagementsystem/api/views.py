@@ -125,6 +125,7 @@ def getClient(request, pk):
 
 # Appointments
 
+
 @api_view(['GET'])
 def getAppointments(request):
     return Response('APPOINTMENTS')
