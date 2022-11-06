@@ -1,6 +1,6 @@
 from rest_framework import status
 from rest_framework import generics
-from rest_framework.response import Response 
+from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -11,10 +11,13 @@ from django.contrib.auth.models import User
 from api.models import Department, Client, Person, Employee
 from api.serializers import DepartmentSerializer, ClientSerializer, EmployeeSerializer
 
-#Views
+# Views
+
+
 class MyTokenObtainPairView(TokenObtainPairView):
     permission_classes = (AllowAny,)
     serializer_class = MyTokenObtainPairSerializer
+
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -22,8 +25,7 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
 
 
-
-#Routes
+# Routes
 
 @api_view(['GET'])
 def getRoutes(request):
@@ -35,7 +37,8 @@ def getRoutes(request):
     ]
     return Response(routes)
 
-#Departments
+# Departments
+
 
 @api_view(['GET', 'POST'])
 def getDepartments(request):
@@ -47,12 +50,13 @@ def getDepartments(request):
         serializer = DepartmentSerializer(departments, many=True)
         return Response(serializer.data)
 
-    if request.method == 'POST':    
-        serializer = DepartmentSerializer(data = request.data)
+    if request.method == 'POST':
+        serializer = DepartmentSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def getDepartment(request, pk):
@@ -69,7 +73,8 @@ def getDepartment(request, pk):
         return Response(serializer.data)
 
     if request.method == 'PUT':
-        serializer = DepartmentSerializer(instance=department, data=request.data)
+        serializer = DepartmentSerializer(
+            instance=department, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -79,7 +84,8 @@ def getDepartment(request, pk):
         department.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-#Clients
+# Clients
+
 
 @api_view(['GET', 'POST'])
 def getClients(request):
@@ -89,35 +95,37 @@ def getClients(request):
         serializer = ClientSerializer(clients, many=True)
         return Response(serializer.data)
 
-    if request.method == 'POST':    
+    if request.method == 'POST':
         newClient = Client(request.data)
         newClient.save()
         print(f"Created new client: {newClient.name}")
         return Response('Done')
 
+
 @api_view(['GET', 'PUT', 'DELETE'])
 def getClient(request, pk):
 
-        if request.method == 'GET':
-            client = Client.objects.get(id=pk)
-            serializer = ClientSerializer(client, many=False)
-            return Response(serializer.data)
+    if request.method == 'GET':
+        client = Client.objects.get(id=pk)
+        serializer = ClientSerializer(client, many=False)
+        return Response(serializer.data)
 
-        if request.method == 'PUT':
-            data = request.data
-            client = Client.objects.get(id=pk)
-            serializer = ClientSerializer(instance=client, data=data)
-            print(serializer)
-            if serializer.is_valid():
-                serializer.save()
-            return serializer.data
+    if request.method == 'PUT':
+        data = request.data
+        client = Client.objects.get(id=pk)
+        serializer = ClientSerializer(instance=client, data=data)
+        print(serializer)
+        if serializer.is_valid():
+            serializer.save()
+        return serializer.data
 
-        if request.method == 'DELETE':
-            client = Client.objects.get(id=pk)
-            client.delete()
-            return Response(f'Client {pk} was deleted')
+    if request.method == 'DELETE':
+        client = Client.objects.get(id=pk)
+        client.delete()
+        return Response(f'Client {pk} was deleted')
 
-#Appointments
+# Appointments
+
 
 @api_view(['GET'])
 def getAppointments(request):
