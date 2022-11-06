@@ -4,9 +4,10 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useContext, useState } from 'react';
 import Patient from '../components/patient';
 import Doctor from '../components/doctor';
+import AuthContext from '../context/authContext';
 
 export default function Dashboard() {
-
+    const { user, logoutUser } = useContext(AuthContext)
 
     useEffect(() => {
         document.title = "Dashboard"
@@ -14,7 +15,18 @@ export default function Dashboard() {
 
     return (
         <div className='dashboard-container'>
-            <div className='register_u'><p>Register Patient</p>
+            <div className='register_u'>
+                <p>Register Patient</p>
+                {user && <p>{user.username}</p>}
+                {user &&
+                    <div className="logout">
+                        <p className="">
+                            <Link to={"/login"} onClick={() => logoutUser()} >
+                                Logout
+                            </Link>
+                        </p>
+                    </div>
+                }
             </div>
             <div className='patient-list'><p>Patient List</p>
                 <Patient />

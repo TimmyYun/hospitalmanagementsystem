@@ -1,35 +1,45 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useState } from 'react';
+import ProtectedRoute from './utils/protected-route';
+import { AuthProvider } from './context/authContext';
 
 const Login = lazy(() => import('./pages/login'));
 const Dashboard = lazy(() => import('./pages/dashboard'));
 
 
 function App() {
+
+
   return (
-    <Router>
-      <Routes>
-        <Route
-          path={'/login'}
-          element={
-            <Suspense fallback={<p>Loading...</p>}>
-              <Login />
-            </Suspense>
-          }
-        />
+    <AuthProvider >
+      <Router>
+        <Routes>
+          <Route
+            path={'/login'}
+            element={
+              <Suspense fallback={<p>Loading...</p>}>
+                <Login />
+              </Suspense>
+            }
+          />
 
-        <Route
-          path={'/'}
-          element={
-            <Suspense fallback={<p>Loading...</p>}>
-              <Dashboard />
-            </Suspense>
-          }
-        />
+          <Route
+            path={'/'}
+            element={
+              <Suspense fallback={<p>Loading...</p>}>
+                <ProtectedRoute >
+                  <Dashboard />
+                </ProtectedRoute>
 
-      </Routes>
-    </Router>
+              </Suspense>
+            }
+          />
+
+        </Routes>
+      </Router>
+    </AuthProvider>
+
   );
 }
 

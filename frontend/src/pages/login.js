@@ -2,19 +2,22 @@ import '../styles/login.css'
 import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useContext, useState } from 'react';
+import AuthContext from '../context/authContext';
 
 
 export default function LoginPage() {
-    const [emailAddress, setEmailAddress] = useState('');
+    let { loginUser } = useContext(AuthContext)
+    const [username, setUsername] = useState('');
     const navigate = useNavigate();
     const [password, setPassword] = useState('');
-    const isInvalid = password === '' || emailAddress === '';
+    const isInvalid = password === '' || username === '';
 
     const handleLogin = async (event) => {
         event.preventDefault();
-        setEmailAddress("");
+        await loginUser(username, password)
+        setUsername("");
         setPassword("");
-        console.log('LOGIn')
+
         navigate('/')
     };
 
@@ -37,8 +40,8 @@ export default function LoginPage() {
                         type="text"
                         placeholder="Email address"
                         className=""
-                        onChange={({ target }) => setEmailAddress(target.value)}
-                        value={emailAddress}
+                        onChange={({ target }) => setUsername(target.value)}
+                        value={username}
                     />
                     <input
                         aria-label="Enter your password"
@@ -62,7 +65,7 @@ export default function LoginPage() {
             <div className="signup">
                 <p className="">
                     Don't have an account?{` `}
-                    <Link to={"/sign-up"} className="font-bold text-purple-medium">
+                    <Link to={"/sign-up"}  >
                         Sign up
                     </Link>
                 </p>
