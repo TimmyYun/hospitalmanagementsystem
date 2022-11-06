@@ -7,7 +7,7 @@ npm install
 
 This one to start the project
 ```
-npm run
+npm start
 ```
 
 To start backend:
