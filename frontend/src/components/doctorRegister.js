@@ -81,7 +81,7 @@ const DoctorRegister = () => {
         <div className="register-container">
 
             <div className="register-form-box">
-
+                <h2>Register a Doctor</h2>
 
 
                 <form onSubmit={handleRegister} method="POST">

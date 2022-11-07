@@ -62,14 +62,14 @@ export default function LoginPage() {
                     </button>
                 </form>
             </div>
-            <div className="signup">
+            {/* <div className="signup">
                 <p className="">
                     Don't have an account?{` `}
                     <Link to={"/sign-up"}  >
                         Sign up
                     </Link>
                 </p>
-            </div>
+            </div> */}
         </div>
     )
 }
