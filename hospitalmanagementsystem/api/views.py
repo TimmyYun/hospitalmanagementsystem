@@ -96,13 +96,15 @@ def getClients(request):
     if request.method == 'GET':
         clients = Client.objects.all()
         serializer = ClientSerializer(clients, many=True)
-        account = User.objects.get(id=int(serializer.data[0]['account']))
-        newResponse = {"username": account.username,
-                       "email": account.email,
-                       "first_name": account.first_name,
-                       "last_name": account.last_name}
-        newResponse.update(serializer.data[0])
-        return Response(newResponse)
+        accounts = [UserSerializer(User.objects.get(id=dic['account']), many=False).data for dic in serializer.data]
+
+        for account in accounts:
+            for person in serializer.data:
+                if person['account'] == account['id']:
+                    account.update(person)
+                    continue
+        
+        return Response(accounts)
 
     if request.method == 'POST':
         serializer = ClientSerializer(data=request.data)
@@ -156,14 +158,17 @@ def getEmployees(request):
     if request.method == 'GET':
         employees = Employee.objects.all()
         serializer = EmployeeSerializer(employees, many=True)
-        account = User.objects.get(id=int(serializer.data[0]['account']))
-        newResponse = {"username": account.username,
-                       "email": account.email,
-                       "first_name": account.first_name,
-                       "last_name": account.last_name}
-        newResponse.update(serializer.data[0])
-        return Response(newResponse)
+        accounts = [UserSerializer(User.objects.get(id=dic['account']), many=False).data for dic in serializer.data]
 
+        for account in accounts:
+            for person in serializer.data:
+                if person['account'] == account['id']:
+                    account.update(person)
+                    continue
+        
+        return Response(accounts)
+    #TO-DO
+    #Create function that gives complete information about user by id and then implement collection in GET query.
     if request.method == 'POST':
         serializer = EmployeeSerializer(data=request.data)
         if serializer.is_valid():
@@ -185,6 +190,7 @@ def getEmployee(request, pk):
     if request.method == 'GET':
         serializer = EmployeeSerializer(employee, many=False)
         account = User.objects.get(id=int(serializer.data['account']))
+        accountserializer = UserSerializer(account)
         newResponse = {"username": account.username,
                        "email": account.email,
                        "first_name": account.first_name,

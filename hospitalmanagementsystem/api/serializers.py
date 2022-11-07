@@ -22,7 +22,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class UserSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', )
+        fields = ('id','username', 'email', 'first_name', 'last_name')
 
 
 class ClientSerializer(ModelSerializer):
@@ -66,7 +66,7 @@ class RegisterSerializer(ModelSerializer):
     department = serializers.IntegerField(write_only=True, required=False)
     specializationId = serializers.CharField(write_only=True, required=False)
     experience = serializers.IntegerField(write_only=True, required=False)
-    photo = serializers.ImageField(write_only=True, required=False)
+    # photo = serializers.ImageField(write_only=True, required=False)
     category = serializers.IntegerField(write_only=True, required=False)
     price = serializers.IntegerField(write_only=True, required=False)
     degree = serializers.CharField(write_only=True, required=False)
@@ -81,7 +81,7 @@ class RegisterSerializer(ModelSerializer):
                   'iin', 'phoneNumber', 'address',
                   'maritalStatus', 'bloodGroup', 'emergencyPhoneNumber',
                   'status', 'type', 'department',
-                  'specializationId', 'experience', 'photo',
+                  'specializationId', 'experience',
                   'category', 'price', 'degree',
                   'rating', 'homepage')
         extra_kwargs = {
