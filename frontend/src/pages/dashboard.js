@@ -5,6 +5,7 @@ import { useContext, useState } from 'react';
 import Patient from '../components/patient';
 import Doctor from '../components/doctor';
 import AuthContext from '../context/authContext';
+import PatientRegister from '../components/patientRegister';
 
 export default function Dashboard() {
     const { user, logoutUser } = useContext(AuthContext)
@@ -15,8 +16,7 @@ export default function Dashboard() {
 
     return (
         <div className='dashboard-container'>
-            <div className='register_u'>
-                <p>Register Patient</p>
+            <div className='logout'>
                 {user && <p>{user.username}</p>}
                 {user &&
                     <div className="logout">
@@ -27,6 +27,9 @@ export default function Dashboard() {
                         </p>
                     </div>
                 }
+                <div>
+                    <PatientRegister />
+                </div>
             </div>
             <div className='patient-list'><p>Patient List</p>
                 <Patient />
