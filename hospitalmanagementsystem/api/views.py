@@ -9,7 +9,7 @@ from .serializers import RegisterSerializer, MyTokenObtainPairSerializer
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from api.models import Department, Client, Person, Employee
-from api.serializers import DepartmentSerializer, ClientSerializer, EmployeeSerializer
+from api.serializers import DepartmentSerializer, ClientSerializer, EmployeeSerializer, UserSerializer
 
 # Views
 
@@ -122,6 +122,47 @@ def getClient(request, pk):
         client = Client.objects.get(id=pk)
         client.delete()
         return Response(f'Client {pk} was deleted')
+
+
+# Doctors
+
+
+@api_view(['GET', 'POST'])
+def getEmployees(request):
+
+    if request.method == 'GET':
+        employees = Employee.objects.all()
+        serializer = EmployeeSerializer(employees, many=True)
+        account = User.objects.get(id=int(serializer.data[0]['account']))
+        accountserializer = UserSerializer(account, many=True)
+        return Response(serializer.data)
+
+    if request.method == 'POST':
+        newEmployee = Employee(request.data)
+        newEmployee.save()
+        return Response(f"Created new employee: {newEmployee.name}")
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def getEmployee(request, pk):
+
+    if request.method == 'GET':
+        employee = Employee.objects.get(id=pk)
+        serializer = EmployeeSerializer(employee, many=False)
+        return Response(serializer.data)
+
+    if request.method == 'PUT':
+        data = request.data
+        employee = Employee.objects.get(id=pk)
+        serializer = EmployeeSerializer(instance=employee, data=data)
+        if serializer.is_valid():
+            serializer.save()
+        return serializer.data
+
+    if request.method == 'DELETE':
+        employee = Employee.objects.get(id=pk)
+        employee.delete()
+        return Response(f'Employee {pk} was deleted')
 
 # Appointments
 

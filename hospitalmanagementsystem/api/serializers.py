@@ -19,6 +19,12 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
 
+class UserSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', )
+
+
 class ClientSerializer(ModelSerializer):
     class Meta:
         model = Client
@@ -30,8 +36,11 @@ class EmployeeSerializer(ModelSerializer):
         model = Employee
         fields = '__all__'
 
+# Serializer for registration form
+
 
 class RegisterSerializer(ModelSerializer):
+    # Person attributes
     email = serializers.EmailField(
         required=True,
         validators=[UniqueValidator(queryset=User.objects.all())]
@@ -47,9 +56,11 @@ class RegisterSerializer(ModelSerializer):
     phoneNumber = serializers.CharField(write_only=True, required=True)
     address = serializers.CharField(write_only=True, required=True)
     maritalStatus = serializers.CharField(write_only=True, required=True)
+    # Client attributes
     bloodGroup = serializers.CharField(write_only=True, required=False)
     emergencyPhoneNumber = serializers.CharField(
         write_only=True, required=False)
+    # Doctor attributes
     status = serializers.CharField(write_only=True, required=False)
     type = serializers.CharField(write_only=True, required=False)
     department = serializers.IntegerField(write_only=True, required=False)
@@ -78,6 +89,7 @@ class RegisterSerializer(ModelSerializer):
             'last_name': {'required': True},
             'groups': {'required': True},
         }
+    # Validate input values
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
@@ -85,6 +97,7 @@ class RegisterSerializer(ModelSerializer):
                 {"password": "Password fields didn't match."})
 
         return attrs
+    # Create user
 
     def create(self, validated_data):
         user = User.objects.create(
@@ -98,7 +111,7 @@ class RegisterSerializer(ModelSerializer):
         user.save()
         group = Group.objects.get(name=validated_data['groups'][0])
         user.groups.add(group)
-
+        # Create profile
         if user.groups.filter(name='Clients').exists():
             self.createClient(validated_data, user)
         elif user.groups.filter(name='Doctors').exists():
@@ -136,6 +149,7 @@ class RegisterSerializer(ModelSerializer):
             department=Department.objects.get(pk=validated_data['department']),
             specializationId=validated_data['specializationId'],
             experience=validated_data['experience'],
+            photo=validated_data['photo'],
             category=validated_data['category'],
             price=validated_data['price'],
             degree=validated_data['degree'],
