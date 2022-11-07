@@ -145,24 +145,28 @@ def getEmployees(request):
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def getEmployee(request, pk):
+    """
+    Retrieve, update or delete a employee.
+    """
+    try:
+        employee = Employee.objects.get(pk=pk)
+    except Employee.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        employee = Employee.objects.get(id=pk)
         serializer = EmployeeSerializer(employee, many=False)
         return Response(serializer.data)
 
     if request.method == 'PUT':
-        data = request.data
-        employee = Employee.objects.get(id=pk)
-        serializer = EmployeeSerializer(instance=employee, data=data)
+        serializer = EmployeeSerializer(instance=employee, data=request.data)
         if serializer.is_valid():
             serializer.save()
-        return serializer.data
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     if request.method == 'DELETE':
-        employee = Employee.objects.get(id=pk)
         employee.delete()
-        return Response(f'Employee {pk} was deleted')
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 # Appointments
 
