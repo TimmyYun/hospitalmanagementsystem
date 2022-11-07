@@ -97,13 +97,12 @@ def getClients(request):
         clients = Client.objects.all()
         serializer = ClientSerializer(clients, many=True)
         account = User.objects.get(id=int(serializer.data[0]['account']))
-        print(account.email)
-        return Response({"username": account.username,
-                         "email": account.email,
-                         "first_name": account.first_name,
-                         "last_name": account.last_name,
-                         "information": serializer.data})
-
+        newResponse = {"username": account.username,
+                   "email": account.email,
+                   "first_name": account.first_name,
+                   "last_name": account.last_name}
+        newResponse.update(serializer.data[0])
+        return Response(newResponse)
 
     if request.method == 'POST':
         serializer = ClientSerializer(data=request.data)
@@ -151,12 +150,12 @@ def getEmployees(request):
         employees = Employee.objects.all()
         serializer = EmployeeSerializer(employees, many=True)
         account = User.objects.get(id=int(serializer.data[0]['account']))
-        print(account.email)
-        return Response({"username": account.username,
-                         "email": account.email,
-                         "first_name": account.first_name,
-                         "last_name": account.last_name,
-                         "information": serializer.data})
+        newResponse = {"username": account.username,
+                   "email": account.email,
+                   "first_name": account.first_name,
+                   "last_name": account.last_name}
+        newResponse.update(serializer.data[0])
+        return Response(newResponse)
 
     if request.method == 'POST':
         serializer = EmployeeSerializer(data=request.data)
