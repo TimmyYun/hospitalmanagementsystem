@@ -98,9 +98,9 @@ def getClients(request):
         serializer = ClientSerializer(clients, many=True)
         account = User.objects.get(id=int(serializer.data[0]['account']))
         newResponse = {"username": account.username,
-                   "email": account.email,
-                   "first_name": account.first_name,
-                   "last_name": account.last_name}
+                       "email": account.email,
+                       "first_name": account.first_name,
+                       "last_name": account.last_name}
         newResponse.update(serializer.data[0])
         return Response(newResponse)
 
@@ -124,7 +124,14 @@ def getClient(request, pk):
 
     if request.method == 'GET':
         serializer = ClientSerializer(client, many=False)
-        return Response(serializer.data)
+        account = User.objects.get(id=int(serializer.data['account']))
+        newResponse = {"username": account.username,
+                       "email": account.email,
+                       "first_name": account.first_name,
+                       "last_name": account.last_name}
+        newResponse.update(serializer.data)
+        return Response(newResponse)
+
 
     if request.method == 'PUT':
         serializer = ClientSerializer(instance=client, data=request.data)
@@ -151,9 +158,9 @@ def getEmployees(request):
         serializer = EmployeeSerializer(employees, many=True)
         account = User.objects.get(id=int(serializer.data[0]['account']))
         newResponse = {"username": account.username,
-                   "email": account.email,
-                   "first_name": account.first_name,
-                   "last_name": account.last_name}
+                       "email": account.email,
+                       "first_name": account.first_name,
+                       "last_name": account.last_name}
         newResponse.update(serializer.data[0])
         return Response(newResponse)
 
@@ -177,7 +184,14 @@ def getEmployee(request, pk):
 
     if request.method == 'GET':
         serializer = EmployeeSerializer(employee, many=False)
-        return Response(serializer.data)
+        account = User.objects.get(id=int(serializer.data['account']))
+        newResponse = {"username": account.username,
+                       "email": account.email,
+                       "first_name": account.first_name,
+                       "last_name": account.last_name}
+        newResponse.update(serializer.data)
+        return Response(newResponse)
+
 
     if request.method == 'PUT':
         serializer = EmployeeSerializer(instance=employee, data=request.data)
