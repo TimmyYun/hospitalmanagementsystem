@@ -6,6 +6,7 @@ import Patient from '../components/patient';
 import Doctor from '../components/doctor';
 import AuthContext from '../context/authContext';
 import PatientRegister from '../components/patientRegister';
+import DoctorRegister from '../components/doctorRegister';
 
 export default function Dashboard() {
     const { user, logoutUser } = useContext(AuthContext)
@@ -29,6 +30,7 @@ export default function Dashboard() {
                 }
                 <div>
                     <PatientRegister />
+                    <DoctorRegister />
                 </div>
             </div>
             <div className='patient-list'><p>Patient List</p>
