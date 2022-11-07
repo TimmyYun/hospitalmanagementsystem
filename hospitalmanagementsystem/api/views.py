@@ -90,38 +90,46 @@ def getDepartment(request, pk):
 
 @api_view(['GET', 'POST'])
 def getClients(request):
-
+    """
+    List all clients, or create a new client.
+    """
     if request.method == 'GET':
         clients = Client.objects.all()
         serializer = ClientSerializer(clients, many=True)
         return Response(serializer.data)
 
     if request.method == 'POST':
-        newClient = Client(request.data)
-        newClient.save()
-        return Response(f"Created new client: {newClient.name}")
+        serializer = ClientSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def getClient(request, pk):
+    """
+    Retrieve, update or delete a department.
+    """
+    try:
+        client = Client.objects.get(pk=pk)
+    except Client.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        client = Client.objects.get(id=pk)
         serializer = ClientSerializer(client, many=False)
         return Response(serializer.data)
 
     if request.method == 'PUT':
-        data = request.data
-        client = Client.objects.get(id=pk)
-        serializer = ClientSerializer(instance=client, data=data)
+        serializer = ClientSerializer(instance=client, data=request.data)
         if serializer.is_valid():
             serializer.save()
-        return serializer.data
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     if request.method == 'DELETE':
-        client = Client.objects.get(id=pk)
         client.delete()
-        return Response(f'Client {pk} was deleted')
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 # Doctors
@@ -129,7 +137,9 @@ def getClient(request, pk):
 
 @api_view(['GET', 'POST'])
 def getEmployees(request):
-
+    """
+    List all employees, or create a new employee.
+    """
     if request.method == 'GET':
         employees = Employee.objects.all()
         serializer = EmployeeSerializer(employees, many=True)
@@ -138,31 +148,37 @@ def getEmployees(request):
         return Response(serializer.data)
 
     if request.method == 'POST':
-        newEmployee = Employee(request.data)
-        newEmployee.save()
-        return Response(f"Created new employee: {newEmployee.name}")
+        serializer = EmployeeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def getEmployee(request, pk):
+    """
+    Retrieve, update or delete a employee.
+    """
+    try:
+        employee = Employee.objects.get(pk=pk)
+    except Employee.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        employee = Employee.objects.get(id=pk)
         serializer = EmployeeSerializer(employee, many=False)
         return Response(serializer.data)
 
     if request.method == 'PUT':
-        data = request.data
-        employee = Employee.objects.get(id=pk)
-        serializer = EmployeeSerializer(instance=employee, data=data)
+        serializer = EmployeeSerializer(instance=employee, data=request.data)
         if serializer.is_valid():
             serializer.save()
-        return serializer.data
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     if request.method == 'DELETE':
-        employee = Employee.objects.get(id=pk)
         employee.delete()
-        return Response(f'Employee {pk} was deleted')
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 # Appointments
 
