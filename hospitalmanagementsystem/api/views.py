@@ -25,7 +25,24 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
 
 
+def getUserData(serializer):
+    """
+    Get user information
+    Arguments:
+        serializer: object serializer 
+    Returns:
+        Dictionary of user information
+    """
+    account = User.objects.get(id=int(serializer['account']))
+    newResponse = {"username": account.username,
+                   "email": account.email,
+                   "first_name": account.first_name,
+                   "last_name": account.last_name}
+    newResponse.update(serializer)
+    return newResponse
+
 # Routes
+
 
 @api_view(['GET'])
 def getRoutes(request):
@@ -96,15 +113,8 @@ def getClients(request):
     if request.method == 'GET':
         clients = Client.objects.all()
         serializer = ClientSerializer(clients, many=True)
-        accounts = [UserSerializer(User.objects.get(id=dic['account']), many=False).data for dic in serializer.data]
-
-        for account in accounts:
-            for person in serializer.data:
-                if person['account'] == account['id']:
-                    account.update(person)
-                    continue
-        
-        return Response(accounts)
+        clientsInfo = [getUserData(user) for user in serializer.data]
+        return Response(clientsInfo)
 
     if request.method == 'POST':
         serializer = ClientSerializer(data=request.data)
@@ -134,7 +144,6 @@ def getClient(request, pk):
         newResponse.update(serializer.data)
         return Response(newResponse)
 
-
     if request.method == 'PUT':
         serializer = ClientSerializer(instance=client, data=request.data)
         if serializer.is_valid():
@@ -158,17 +167,9 @@ def getEmployees(request):
     if request.method == 'GET':
         employees = Employee.objects.all()
         serializer = EmployeeSerializer(employees, many=True)
-        accounts = [UserSerializer(User.objects.get(id=dic['account']), many=False).data for dic in serializer.data]
+        employeesInfo = [getUserData(user) for user in serializer.data]
+        return Response(employeesInfo)
 
-        for account in accounts:
-            for person in serializer.data:
-                if person['account'] == account['id']:
-                    account.update(person)
-                    continue
-        
-        return Response(accounts)
-    #TO-DO
-    #Create function that gives complete information about user by id and then implement collection in GET query.
     if request.method == 'POST':
         serializer = EmployeeSerializer(data=request.data)
         if serializer.is_valid():
@@ -189,15 +190,8 @@ def getEmployee(request, pk):
 
     if request.method == 'GET':
         serializer = EmployeeSerializer(employee, many=False)
-        account = User.objects.get(id=int(serializer.data['account']))
-        accountserializer = UserSerializer(account)
-        newResponse = {"username": account.username,
-                       "email": account.email,
-                       "first_name": account.first_name,
-                       "last_name": account.last_name}
-        newResponse.update(serializer.data)
-        return Response(newResponse)
-
+        completeInformation = getUserData(serializer.data)
+        return Response(completeInformation)
 
     if request.method == 'PUT':
         serializer = EmployeeSerializer(instance=employee, data=request.data)
@@ -209,6 +203,7 @@ def getEmployee(request, pk):
     if request.method == 'DELETE':
         employee.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 # Appointments
 
