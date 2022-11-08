@@ -1,3 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap');
+
+
+:root {
+  --clr-gray-1: #333333;
+  --clr-gray-2: #4f4f4f;
+
+  --clr-neutral: #ffffff;
+  --clr-primary: #4e5150;
+  --clr-accent: #f2994a;
+
+  --ff-primary: 'Montserrat', sans-serif;
+
+}
+
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

@@ -53,3 +53,8 @@ input {
     margin-bottom: 0.5rem;
     width: clamp(20vw, 23rem, 85vw);
 }
+
+.regforms {
+    display: flex;
+    justify-content: space-around;
+}

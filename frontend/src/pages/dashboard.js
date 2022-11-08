@@ -10,9 +10,50 @@ import DoctorRegister from '../components/doctorRegister';
 
 export default function Dashboard() {
     const { user, logoutUser } = useContext(AuthContext)
+    const [patients, setPatients] = useState([])
+    const [doctors, setDoctors] = useState([])
+
 
     useEffect(() => {
+        let getPatients = async () => {
+            let response = await fetch("http://127.0.0.1:8000/client/", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            let data = await response.json()
+
+            if (response.status === 200) {
+                console.log(data)
+                setPatients([data])
+            } else {
+                alert("Something went wrong")
+            }
+
+        }
+
+        let getDoctors = async () => {
+            let response = await fetch("http://127.0.0.1:8000/employee/", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            let data = await response.json()
+
+            if (response.status === 200) {
+                console.log(data)
+                setDoctors([data])
+            } else {
+                alert("Something went wrong")
+            }
+
+        }
+
         document.title = "Dashboard"
+        getDoctors()
+        getPatients()
     }, [])
 
     return (
@@ -28,22 +69,21 @@ export default function Dashboard() {
                         </p>
                     </div>
                 }
-                <div>
+                <div className='regforms'>
                     <PatientRegister />
                     <DoctorRegister />
                 </div>
             </div>
             <div className='patient-list'><p>Patient List</p>
-                <Patient />
-                <Patient />
-                <Patient />
-                <Patient />
+                {patients !== [] && patients.map((p) => {
+                    return <Patient key={p.id} patient={p} />
+                })}
+
             </div>
             <div className='doctor-list'><p>Doctor List</p>
-                <Doctor />
-                <Doctor />
-                <Doctor />
-                <Doctor />
+                {doctors && doctors.map((p) => {
+                    return <Doctor key={p.id} doctor={p} />
+                })}
             </div>
         </div>
     )
