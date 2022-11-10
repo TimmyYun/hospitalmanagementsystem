@@ -8,8 +8,8 @@ from .serializers import RegisterSerializer, MyTokenObtainPairSerializer
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from api.models import Department, Client, Person, Employee
-from api.serializers import DepartmentSerializer, ClientSerializer, EmployeeSerializer, UserSerializer
+from api.models import Department, Client, Person, Employee, Appointment
+from api.serializers import DepartmentSerializer, ClientSerializer, EmployeeSerializer, UserSerializer, AppointmentSerializer
 
 # Views
 
@@ -211,3 +211,21 @@ def getEmployee(request, pk):
 @api_view(['GET'])
 def getAppointments(request):
     return Response('APPOINTMENTS')
+
+@api_view(['GET', 'POST'])
+def getAppointments(request):
+    """
+    List all employees, or create a new employee.
+    """
+    if request.method == 'GET':
+        appointments = Appointment.objects.all()
+        serializer = AppointmentSerializer(appointments, many=True)
+        return Response(serializer)
+
+    if request.method == 'POST':
+        serializer = AppointmentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
