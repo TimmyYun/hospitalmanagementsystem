@@ -26,5 +26,6 @@ urlpatterns = [
 
     # Appintments
     path('appointment/', views.getAppointments, name="appointments"),
+    path('appointment/<str:pk>', views.getAppointment, name="appointment"),
 
 ]
