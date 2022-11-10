@@ -1,16 +1,19 @@
-.form-box{
+.form-box {
     display: flex;
-    border: 1px solid black;
-    padding: 0.6rem;
-    border-radius: 7px;
+    padding: 1.2rem;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
 }
 
-.form-box > form {
+.form-box>form {
     display: flex;
     flex-direction: column;
+
 }
 
-.login-container{
+
+
+.login-container {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -18,14 +21,15 @@
     justify-content: center;
 }
 
-.signup > p{
+.signup>p {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-input{
+input {
     padding: 0.3rem;
     margin-bottom: 0.5rem;
+    font-size: 1rem;
 }

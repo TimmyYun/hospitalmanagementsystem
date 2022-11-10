@@ -6,7 +6,7 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.validators import UniqueValidator
 
-from api.models import Department, Employee, Client
+from api.models import Department, Employee, Client, Appointment
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -165,3 +165,9 @@ class DepartmentSerializer(ModelSerializer):
     class Meta:
         model = Department
         fields = '__all__'
+
+class AppointmentSerializer(ModelSerializer):
+    class Meta:
+        model = Appointment
+        fields = '__all__'
+
