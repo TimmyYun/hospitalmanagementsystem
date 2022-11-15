@@ -212,6 +212,7 @@ def getEmployee(request, pk):
 def getAppointments(request):
     return Response('APPOINTMENTS')
 
+
 @api_view(['GET', 'POST'])
 def getAppointments(request):
     """
@@ -229,6 +230,7 @@ def getAppointments(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['GET', 'PUT', 'DELETE'])
 def getAppointment(request, pk):
     """
@@ -244,7 +246,8 @@ def getAppointment(request, pk):
         return Response(serializer)
 
     if request.method == 'PUT':
-        serializer = AppointmentSerializer(instance=appointment, data=request.data)
+        serializer = AppointmentSerializer(
+            instance=appointment, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

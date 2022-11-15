@@ -22,7 +22,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class UserSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = ('id','username', 'email', 'first_name', 'last_name')
+        fields = ('id', 'username', 'email', 'first_name', 'last_name')
 
 
 class ClientSerializer(ModelSerializer):
@@ -166,8 +166,8 @@ class DepartmentSerializer(ModelSerializer):
         model = Department
         fields = '__all__'
 
+
 class AppointmentSerializer(ModelSerializer):
     class Meta:
         model = Appointment
         fields = '__all__'
-
