@@ -5,9 +5,11 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import RegisterSerializer, MyTokenObtainPairSerializer
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.decorators import login_required, permission_required
 
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group, Permission
 from api.models import Department, Client, Person, Employee, Appointment
 from api.serializers import DepartmentSerializer, ClientSerializer, EmployeeSerializer, UserSerializer, AppointmentSerializer
 
@@ -53,16 +55,20 @@ def getRoutes(request):
             'login/refresh',
         }
     ]
+    content_type = ContentType.objects.get_for_model(Department)
+    post_permission = Permission.objects.filter(content_type=content_type)
+    print([perm.codename for perm in post_permission])
     return Response(routes)
 
 # Departments
 
-
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
 def getDepartments(request):
     """
     List all departments, or create a new department.
     """
+    print(request.user.has_perm("api.view_department"))
     if request.method == 'GET':
         departments = Department.objects.all()
         serializer = DepartmentSerializer(departments, many=True)
