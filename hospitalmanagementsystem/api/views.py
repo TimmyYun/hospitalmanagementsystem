@@ -62,8 +62,8 @@ def getRoutes(request):
 
 # Departments
 
+
 @api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticated])
 def getDepartments(request):
     """
     List all departments, or create a new department.
