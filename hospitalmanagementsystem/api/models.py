@@ -12,7 +12,7 @@ class Department(models.Model):
     description = models.TextField(blank=True)
 
 
-class Person(models.Model):
+class Person(models.Model): 
     account = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     middlename = models.CharField(max_length=20, blank=True)
