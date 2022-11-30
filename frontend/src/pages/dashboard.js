@@ -26,7 +26,7 @@ export default function Dashboard() {
 
             if (response.status === 200) {
                 console.log(data)
-                setPatients([data])
+                setPatients(data)
             } else {
                 alert("Something went wrong")
             }
@@ -44,7 +44,7 @@ export default function Dashboard() {
 
             if (response.status === 200) {
                 console.log(data)
-                setDoctors([data])
+                setDoctors(data)
             } else {
                 alert("Something went wrong")
             }
@@ -75,14 +75,14 @@ export default function Dashboard() {
                 </div>
             </div>
             <div className='patient-list'><p>Patient List</p>
-                {patients !== [] && patients.map((p) => {
-                    return <Patient key={p.id} patient={p} />
+                {patients.length !== [] && patients.map((p, i) => {
+                    return <Patient key={i} patient={p} />
                 })}
 
             </div>
             <div className='doctor-list'><p>Doctor List</p>
-                {doctors && doctors.map((p) => {
-                    return <Doctor key={p.id} doctor={p} />
+                {doctors && doctors.map((p, i) => {
+                    return <Doctor key={i} doctor={p} />
                 })}
             </div>
         </div>

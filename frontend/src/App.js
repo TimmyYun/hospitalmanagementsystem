@@ -6,6 +6,7 @@ import { AuthProvider } from './context/authContext';
 
 const Login = lazy(() => import('./pages/login'));
 const Dashboard = lazy(() => import('./pages/dashboard'));
+const AppointmentPage = lazy(() => import('./pages/appointment'));
 
 
 function App() {
@@ -30,6 +31,18 @@ function App() {
               <Suspense fallback={<p>Loading...</p>}>
                 <ProtectedRoute >
                   <Dashboard />
+                </ProtectedRoute>
+
+              </Suspense>
+            }
+          />
+
+          <Route
+            path={'/appointment'}
+            element={
+              <Suspense fallback={<p>Loading...</p>}>
+                <ProtectedRoute >
+                  <AppointmentPage />
                 </ProtectedRoute>
 
               </Suspense>
