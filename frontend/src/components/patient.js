@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 
 export default function Patient({ patient }) {
+    //   patient = patient[0]
     const navigate = useNavigate();
     const [isHidden, setIsHidden] = useState(true)
     const [username, setUsername] = useState(patient.username)

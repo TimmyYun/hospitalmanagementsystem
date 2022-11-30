@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 
 export default function Doctor({ doctor }) {
+    // doctor = doctor[0]
+    console.log(doctor, 'ahahaha')
     const [isHidden, setIsHidden] = useState(true)
     const navigate = useNavigate();
     const [username, setUsername] = useState(doctor.username)
@@ -112,7 +114,7 @@ export default function Doctor({ doctor }) {
         <div className='user-container'>
             <p
                 onClick={() => setIsHidden(!isHidden)}
-            >Doctor</p>
+            > ↓ Dr.{` `}{doctor.last_name}</p>
             <div className={`user-info ${isHidden ? "hide" : ""}`}>
                 <form onSubmit={handleDelete} method="DELETE">
                     <button onSubmit={handleDelete} type="submit">DELETE</button>
