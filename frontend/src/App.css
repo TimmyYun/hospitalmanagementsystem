@@ -1,0 +1,9 @@
+p {
+    margin: 0;
+}
+
+.dCardDets>div>p {
+    margin-right: 1rem;
+    font-weight: 600;
+    margin-top: 0.3rem;
+}

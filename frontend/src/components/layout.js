@@ -1,5 +1,6 @@
 import React from 'react';
 import { Breadcrumb, Layout, Menu } from 'antd';
+import { Link } from 'react-router-dom';
 
 const { Header, Content, Footer } = Layout;
 const LayoutW = ({ children }) => {
@@ -21,6 +22,7 @@ const LayoutW = ({ children }) => {
 
                 }}
             >
+                <Link to='/appointment/' style={{ color: 'white', fontSize: '2rem' }}>Make Appointment</Link>
 
             </Header>
             <Content

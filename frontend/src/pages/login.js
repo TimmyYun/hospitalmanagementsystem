@@ -18,7 +18,7 @@ export default function LoginPage() {
         setUsername("");
         setPassword("");
 
-        navigate('/')
+        navigate('/appointment')
     };
 
 
